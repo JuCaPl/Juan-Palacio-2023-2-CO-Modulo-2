@@ -1,11 +1,13 @@
-import pygame
 import os
+import pygame
 
 
+pygame.init()
 # Global Constants
 TITLE = "Chrome Dino Runner"
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 FPS = 30
 IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
 
@@ -58,8 +60,8 @@ LARGE_CACTUS = [
 ]
 
 BIRD = [
-    pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird1.png")),
-    pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird2.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird1.png")).convert_alpha(),
+    pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird2.png")).convert_alpha(),
 ]
 
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
@@ -73,4 +75,4 @@ HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 DEFAULT_TYPE = "default"
 
 
-FONT_STYLE = 'fonts/PIX-L.ttf'
+FONT_STYLE = 'my_fonts/PIX-L.ttf'

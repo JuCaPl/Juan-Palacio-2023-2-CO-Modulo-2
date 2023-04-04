@@ -1,9 +1,9 @@
 import pygame
 
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS,FONT_STYLE
 from dino_runner.components.dinosaur import Dinosaur
- #from dino_runner.components.cloud import Cloud
+from dino_runner.components.cloud import Cloud
 
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 
@@ -19,10 +19,10 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 380
         self.player = Dinosaur()
-        #self.cloud = Cloud()
+        self.cloud = Cloud()
         self.Obs_Manager = ObstacleManager()
         self.points = 0
-        self.font = pygame.font.Font('fonts/PIX-L.ttf', 30)
+        self.font = pygame.font.Font(FONT_STYLE, 30)
         
 
     def run(self):
@@ -44,21 +44,21 @@ class Game:
           # dino
         self.player.update(user_input)
           # nubes
-          #self.cloud.update()
+        self.cloud.update()
           # Cactus
         self.Obs_Manager.update(self)
-           #self.Cols.update()
+           
         
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
-          #self.player.cols(self.screen)
+      
         self.player.draw(self.screen)
-          # self.cloud.draw(self.screen)
+        self.cloud.draw(self.screen)
         self.Obs_Manager.draw(self.screen)
-          #self.Cols.draw(self.screen)
+          
         self.score()
         pygame.display.update()
         pygame.display.flip()
