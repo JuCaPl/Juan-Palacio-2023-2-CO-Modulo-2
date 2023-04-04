@@ -2,24 +2,18 @@ import pygame
 from pygame.sprite import Sprite
 from dino_runner.utils.constants import RUNNING,JUMPING,DUCKING
 
-from dino_runner.components.obstacles.cactus import Cactus
-from dino_runner.components.obstacles.bird import Bird
 
-def detect_collision(rect1, rect2):
-        if rect1.x < rect2.x  and rect1.x  > rect2.x and rect1.y < rect2.y  and rect1.y  > rect2.y:
-            return True
-        else:
-            return False
 
-class Dinosaur(Sprite):
+
+
+
+class Dinosaur():
     x_pos= 80
     y_pos= 310
     JUMP_SPEED = 8.5
     y_duck = 340
     
     def __init__(self):
-        self.cactus = Cactus()
-        self.bird = Bird()
         self.image = RUNNING[0]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.x_pos
@@ -81,9 +75,7 @@ class Dinosaur(Sprite):
     def draw(self,screen):
         screen.blit(self.image,(self.dino_rect.x ,self.dino_rect.y))
        
-    def cols(self,screen): 
-        if self.dino_rect.colliderect(self.cactus.cactus_rect):
-            pygame.draw.rect(screen,(255,0,0),self.dino_rect,2)
+        
     
    
                 
