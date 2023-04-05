@@ -69,6 +69,10 @@ HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
 
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
+GMOV = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
+
+REST = pygame.image.load(os.path.join(IMG_DIR, 'Other/Reset.png'))
+
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
 DEFAULT_TYPE = "default"
