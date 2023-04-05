@@ -1,7 +1,6 @@
 import os
 import pygame
 
-
 pygame.init()
 # Global Constants
 TITLE = "Chrome Dino Runner"
@@ -76,3 +75,4 @@ DEFAULT_TYPE = "default"
 
 
 FONT_STYLE = 'my_fonts/PIX-L.ttf'
+

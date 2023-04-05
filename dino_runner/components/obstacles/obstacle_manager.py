@@ -12,7 +12,7 @@ class ObstacleManager:
     def generate_obstacle(self):
         obs_imges = SMALL_CACTUS + LARGE_CACTUS 
         obs_img = random.choice(obs_imges)
-        if obs_img in LARGE_CACTUS:
+        if obs_img in LARGE_CACTUS:                                  #SIMPLIFICAR CONDICIONES
             obstacle = Cactus(obs_img, y_pos=300)
         else:
             if random.randint(0,1):
@@ -27,7 +27,10 @@ class ObstacleManager:
         
 
     def update(self, game):
+        # Este método actualiza la posición y el estado de los obstáculos en la pantalla. 
+        # Si la lista de obstáculos está vacía, genera un nuevo obstáculo llamando al método 
         if len(self.obstacles) == 0:
+            #llama al metodo !abajo
             obstacle = self.generate_obstacle()
             self.obstacles.append(obstacle)
         
@@ -36,11 +39,14 @@ class ObstacleManager:
             if game.player.dino_rect.colliderect(obstacle.rect):
                 print('Cols')  # para ver si funciona la colision
                 #pygame.time.delay(1000)
-                game.playin = False
+                game.death_count += 1
+                game.playing = False
                 break
 
     def draw(self,screen):
-        
         for obstacle in self.obstacles:
             obstacle.draw(screen)
+    
+    def reset_obs(self):
+        self.obstacles = []
 
