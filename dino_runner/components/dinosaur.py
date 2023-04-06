@@ -1,7 +1,12 @@
 import pygame
 from pygame.sprite import Sprite
-from dino_runner.utils.constants import RUNNING,JUMPING,DUCKING
+from dino_runner.utils.constants import RUNNING,JUMPING,DUCKING,DEFAULT_TYPE,SHIELD_TYPE,RUNNING_SHIELD,JUMPING_SHIELD,DUCKING_SHIELD
 
+#from dino_runner.utils.constants-v import RUNNING,JUMPING,DUCKING
+
+RUN_IMG = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
+JUMP_IMG = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD}
+DUCK_IMG = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
 
 
 class Dinosaur():
@@ -11,7 +16,8 @@ class Dinosaur():
     y_duck = 340
     
     def __init__(self):
-        self.image = RUNNING[0]
+        self.type = DEFAULT_TYPE
+        self.image = RUN_IMG[self.type][0]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.x_pos
         self.dino_rect.y = self.y_pos
@@ -20,6 +26,8 @@ class Dinosaur():
         self.dino_jump = False
         self.dino_duck = False
         self.jump_speed = self.JUMP_SPEED
+        self.has_power_up = False
+        self.power_time_up = 0
     
 
     def update(self, user_input):
@@ -47,14 +55,14 @@ class Dinosaur():
             self.dino_duck = False
        
     def run(self):
-        self.image = RUNNING[0] if self.step_index < 5 else RUNNING[1]
+        self.image = RUN_IMG[self.type][0] if self.step_index < 5 else RUN_IMG[self.type][1]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.x_pos
         self.dino_rect.y = self.y_pos
         self.step_index += 1
 
     def jump(self):
-        self.image = JUMPING 
+        self.image = JUMP_IMG[self.type]
         self.dino_rect.y -= self.jump_speed * 4
         self.jump_speed -= 0.8
         if self.jump_speed < -self.JUMP_SPEED:
@@ -63,7 +71,7 @@ class Dinosaur():
             self.jump_speed = self.JUMP_SPEED
 
     def duck(self):
-        self.image = DUCKING[0] if self.step_index < 5 else DUCKING[1]
+        self.image = DUCK_IMG[self.type][0] if self.step_index < 5 else DUCK_IMG[self.type][1]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.x_pos 
         self.dino_rect.y = self.y_duck  
@@ -72,8 +80,8 @@ class Dinosaur():
     def draw(self,screen):
         screen.blit(self.image,(self.dino_rect.x ,self.dino_rect.y))
        
-    def reset_dino(self):
-        self.image = RUNNING[0]
+    def reset(self):
+        self.image = RUN_IMG[self.type][0]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.x_pos
         self.dino_rect.y = self.y_pos

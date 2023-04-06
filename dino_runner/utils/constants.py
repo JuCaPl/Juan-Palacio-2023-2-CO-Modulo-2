@@ -73,10 +73,12 @@ GMOV = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
 
 REST = pygame.image.load(os.path.join(IMG_DIR, 'Other/Reset.png'))
 
+PLAY = pygame.image.load(os.path.join(IMG_DIR, 'Other/PLAY.png'))
+
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
 DEFAULT_TYPE = "default"
 
-
 FONT_STYLE = 'my_fonts/PIX-L.ttf'
 
+SHIELD_TYPE = 'shield'
