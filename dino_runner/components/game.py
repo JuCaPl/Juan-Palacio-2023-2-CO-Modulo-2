@@ -1,7 +1,8 @@
 import pygame
 
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS,FONT_STYLE,GMOV,REST,PLAY,DEFAULT_TYPE
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS,FONT_STYLE,GMOV,REST,PLAY
+from dino_runner.utils.constants import DEFAULT_TYPE,HEART,HEARTR,SHIELD_TYPE
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.cloud import Cloud
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
@@ -27,11 +28,17 @@ class Game:
         self.menu = Menu(self.screen)  # Acomodar esto
         self.running = False
         self.death_count = 0
+        self.max_death = 0
         self.score = 0
         self.max_score = 0
         self.power_up_manager = PowerUpManager()
+        self.color = (94, 94, 94)
+        self.color_time = 0
+        self.lives = 8
         
+       
     
+
     def execute(self):
         self.running = True
         while self.running:
@@ -57,14 +64,13 @@ class Game:
                 self.playing = False
 
     def update(self):
-        user_input = pygame.key.get_pressed()
-          
-        self.player.update(user_input)  # dino
-        self.cloud.update()             # nubes
-        self.Obs_Manager.update(self)   # Cactus
-        self.power_up_manager.update(self)
-        self.update_score()             # puntaje
-        
+        user_input = pygame.key.get_pressed()   
+        self.player.update(user_input)      # dino
+        self.cloud.update()                 # nubes
+        self.Obs_Manager.update(self)       # Cactus
+        self.power_up_manager.update(self)  # powers
+        self.update_score()                 # puntaje
+
 
     def draw(self):
         self.clock.tick(FPS)
@@ -75,8 +81,9 @@ class Game:
         self.cloud.draw(self.screen)
         self.Obs_Manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
-        
         self.draw_score()
+        self.draw_lives()
+        
         pygame.display.update()
         pygame.display.flip() #Actualiza la superficie de visualización completa a la pantalla 
         
@@ -92,7 +99,8 @@ class Game:
     
     def show_menu(self):
         self.menu.reset_screen_color(self.screen)
-        
+
+        self.power_up_manager.draw(self.screen)
         self.cloud.draw(self.screen)
         self.player.draw(self.screen)
         self.Obs_Manager.draw(self.screen)
@@ -118,22 +126,42 @@ class Game:
         
         if self.score > self.max_score:
             self.max_score = self.score
+            if self.max_score % 100 == 0:
+                self.color_time = 10
 
     def draw_score(self): 
         self.font = pygame.font.Font(FONT_STYLE, 32)   
-        texto = 'Score: '+ str(self.score).zfill(6)
+        texto = 'Score:            '+ str(self.score).zfill(6)
         self.text = self.font.render(texto, True,(94, 94, 94))
         #self.text = self.font.render('Points: '+ str(self.points), True,(96,96,96))
         self.text_rect = self.text.get_rect()
-        self.text_rect.center = (980,30)
+        self.text_rect.center = (955,80)
         self.screen.blit(self.text, self.text_rect)
+        
+        
+        textoM = 'High score: '+ str(self.max_score).zfill(6)
+        if self.max_score % 100 == 0:
+            self.color_time = 10
+        elif self.color_time > 0:
+            self.color = (0,255,0) # color por el que cambia
+            self.color_time -=1
+        else:
+            self.color = (94, 94, 94)
+        self.textM = self.font.render(textoM, True,self.color)
+        self.textM_rect = self.textM.get_rect()
+        self.textM_rect.center = (955,50)
+        self.screen.blit(self.textM, self.textM_rect)
+
+        
+        
+
     
     def count(self):
-
+        
         self.font = pygame.font.Font(FONT_STYLE, 35)
-        textoDeth = 'Death:              '+ str(self.death_count).zfill(6)
-        textoAct = 'Points Act:   '+ str(self.score).zfill(6)
-        textoMax = 'Points Max:   '+ str(self.max_score).zfill(6)
+        textoDeth ='Total Death:   '+ str(self.death_count).zfill(6)
+        textoAct = 'Your Score:   '+ str(self.score).zfill(6)
+        textoMax = 'High score:   '+ str(self.max_score).zfill(6)
 
         self.text = self.font.render('Press any key to continue playing', True,(94, 94, 94 ))
         self.textAct = self.font.render(textoAct, True,(94, 94, 94))
@@ -167,11 +195,37 @@ class Game:
             time_to_show = round((self.player.power_time_up - pygame.time.get_ticks())/1000,2)
 
             if time_to_show >=0:
-                self.menu.draw(self.screen, f'{self.player.type.capitalize()} enabled for',34, 550,100)
-                self.menu.draw(self.screen, f'( {str(time_to_show).zfill(5)})  seconds',34, 550,150)
+                    if self.player.type == SHIELD_TYPE:
+                         self.menu.draw(self.screen, f'Shield enabled for', 34, 550, 50)
+                         self.menu.draw(self.screen, f'({time_to_show})  seconds',34, 550,100)
             else:
                 self.player.has_power_up = False
                 self.player.type = DEFAULT_TYPE
+    
+
+
+    def draw_lives(self):
+        if self.death_count > self.max_death:
+            self.max_death = self.death_count
+
+
+        for i in range(self.lives):
+            self.screen.blit(HEARTR, (i*35 + 820,10))
+
+        for i in range(self.max_death):
+            self.screen.blit(HEART, (i*35+820,10))
+
+        pygame.display.update()  
+        
+        if self.death_count > 7:
+            self.playing=False
+            pygame.display.quit()
+            pygame.quit()
+        
+    
+  
+            
+
 
 
  

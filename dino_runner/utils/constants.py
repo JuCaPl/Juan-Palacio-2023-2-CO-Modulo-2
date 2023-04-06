@@ -20,7 +20,7 @@ RUNNING = [
 
 RUNNING_SHIELD = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1Shield.png")),
-    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2Shield.png")),
 ]
 
 RUNNING_HAMMER = [
@@ -77,8 +77,16 @@ PLAY = pygame.image.load(os.path.join(IMG_DIR, 'Other/PLAY.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
+HEARTR = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeartR.png'))
+
+BOMB = pygame.image.load(os.path.join(IMG_DIR, 'Other/BOMB.png'))
+
+EXPLO = pygame.image.load(os.path.join(IMG_DIR, 'Other/Explo.png'))
+
 DEFAULT_TYPE = "default"
 
 FONT_STYLE = 'my_fonts/PIX-L.ttf'
 
 SHIELD_TYPE = 'shield'
+
+BOMB_TYPE = 'bomb'

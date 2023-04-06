@@ -2,11 +2,11 @@ import pygame
 from pygame.sprite import Sprite
 from dino_runner.utils.constants import RUNNING,JUMPING,DUCKING,DEFAULT_TYPE,SHIELD_TYPE,RUNNING_SHIELD,JUMPING_SHIELD,DUCKING_SHIELD
 
-#from dino_runner.utils.constants-v import RUNNING,JUMPING,DUCKING
 
-RUN_IMG = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
-JUMP_IMG = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD}
-DUCK_IMG = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
+RUN_IMG = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, 'bomb': RUNNING}
+JUMP_IMG = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD , 'bomb': JUMPING}
+DUCK_IMG = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, 'bomb': DUCKING}
+
 
 
 class Dinosaur():
@@ -14,7 +14,7 @@ class Dinosaur():
     y_pos= 310
     JUMP_SPEED = 8.5
     y_duck = 340
-    
+    jump_sound = pygame.mixer.Sound('sounds\jump01.wav')
     def __init__(self):
         self.type = DEFAULT_TYPE
         self.image = RUN_IMG[self.type][0]
@@ -28,6 +28,7 @@ class Dinosaur():
         self.jump_speed = self.JUMP_SPEED
         self.has_power_up = False
         self.power_time_up = 0
+        
     
 
     def update(self, user_input):
@@ -45,6 +46,7 @@ class Dinosaur():
             self.dino_run = False
             self.dino_jump = True
             self.dino_duck = False
+            self.jump_sound.play()
         elif user_input[pygame.K_DOWN] and not self.dino_duck:
             self.dino_run = False
             self.dino_jump = False
@@ -62,7 +64,7 @@ class Dinosaur():
         self.step_index += 1
 
     def jump(self):
-        self.image = JUMP_IMG[self.type]
+        self.image = JUMP_IMG[self.type] 
         self.dino_rect.y -= self.jump_speed * 4
         self.jump_speed -= 0.8
         if self.jump_speed < -self.JUMP_SPEED:

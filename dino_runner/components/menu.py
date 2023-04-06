@@ -22,6 +22,7 @@ class Menu:
        self.text_rect = self.text.get_rect()
        self.text_rect.center = (x,y)
        screen.blit(self.text, self.text_rect)
+       
     
     def reset_screen_color(self,screen):
        screen.fill((255,255,255))
